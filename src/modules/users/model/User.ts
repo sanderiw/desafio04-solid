@@ -12,8 +12,11 @@ class User {
     if (!this.id) {
       this.id = uuidV4();
     }
-    if (this.created_at) {
+    if (!this.created_at) {
       this.created_at = new Date();
+    }
+    if (!this.admin) {
+      this.admin = false;
     }
   }
 }
