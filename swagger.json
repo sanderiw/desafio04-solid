@@ -1,0 +1,124 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "User registry documentation",
+    "description": "Api to register and list users",
+    "version": "1.0.0",
+    "contact": {
+      "email": "sanderiw@gmail.com"
+    }
+  },
+  "paths": {
+    "/users/{user_id}": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create a new user",
+        "requestBody": {
+          "description": "Mandatory fields to create a new user",
+          "required": true,
+
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "Sander",
+                  "email": "sanderiw@gmail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Operation success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "example": {
+                    "name": "Sander Iwase",
+                    "email": "sanderiw@gmail.com",
+                    "admin": false,
+                    "id": "75b080c4-db5e-4f71-90d9-a5b05d437299",
+                    "created_at": "2021-11-25T23:07:23.180Z",
+                    "updated_at": "2021-11-25T23:07:23.180Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email account already in use",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "This email is already in user"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "Return all users",
+        "description": "Only users with **admin** privilege can access",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation success"
+          }
+        }
+      },
+      "patch": {}
+    }
+  }
+}
