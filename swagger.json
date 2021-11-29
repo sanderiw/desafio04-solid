@@ -9,7 +9,7 @@
     }
   },
   "paths": {
-    "/users/{user_id}": {
+    "/users": {
       "post": {
         "tags": ["User"],
         "summary": "Create a new user",
@@ -114,11 +114,229 @@
         ],
         "responses": {
           "200": {
-            "description": "Operation success"
+            "description": "Operation success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "properties": [
+                    {
+                      "admin": {
+                        "type": "boolean"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  ],
+                  "example": [
+                    {
+                      "name": "Sander Iwase",
+                      "email": "sanderiw@gmail.com",
+                      "admin": false,
+                      "id": "75b080c4-db5e-4f71-90d9-a5b05d437299",
+                      "created_at": "2021-11-25T23:07:23.180Z",
+                      "updated_at": "2021-11-25T23:07:23.180Z"
+                    },
+                    {
+                      "name": "Junior Iwase",
+                      "email": "junior@gmail.com",
+                      "admin": true,
+                      "id": "19b080c4-db5e-4f71-90d9-a5b05d437299",
+                      "created_at": "2021-11-27T23:07:23.180Z",
+                      "updated_at": "2021-11-27T23:07:23.180Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User with no admin privileges or User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "You need administrator privileges to list all users"
+                  }
+                }
+              }
+            }
           }
         }
-      },
-      "patch": {}
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Return a specific user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "User's Id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "example": {
+                    "name": "Sander Iwase",
+                    "email": "sanderiw@gmail.com",
+                    "admin": false,
+                    "id": "75b080c4-db5e-4f71-90d9-a5b05d437299",
+                    "created_at": "2021-11-25T23:07:23.180Z",
+                    "updated_at": "2021-11-25T23:07:23.180Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Attach admin privileges to a user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": "true",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "example": {
+                    "name": "Sander Iwase",
+                    "email": "sanderiw@gmail.com",
+                    "admin": false,
+                    "id": "75b080c4-db5e-4f71-90d9-a5b05d437299",
+                    "created_at": "2021-11-25T23:07:23.180Z",
+                    "updated_at": "2021-11-25T23:07:23.180Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
